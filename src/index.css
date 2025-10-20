@@ -1,0 +1,187 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* NEURA Dark Theme - Futuristic & Minimalistic */
+    --background: 0 0% 7%;
+    --foreground: 0 0% 100%;
+
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 0 0% 10%;
+    --popover-foreground: 0 0% 100%;
+
+    /* Emergency Red Accent */
+    --primary: 0 100% 61%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Subtle gray for secondary elements */
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 65%;
+
+    --accent: 0 100% 61%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 100% 61%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 20%;
+    --input: 0 0% 15%;
+    --ring: 0 100% 61%;
+
+    --radius: 1rem;
+
+    /* Status colors */
+    --success: 142 71% 45%;
+    --warning: 38 92% 50%;
+    --info: 199 89% 48%;
+
+    /* Glow effect */
+    --glow-primary: 0 100% 61%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  /* Prevent pull-to-refresh on mobile */
+  html, body {
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@layer utilities {
+  /* SOS Button Glow Animation */
+  .glow-pulse {
+    animation: glow-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% {
+      box-shadow: 0 0 20px hsl(var(--glow-primary) / 0.4),
+                  0 0 40px hsl(var(--glow-primary) / 0.2),
+                  0 0 60px hsl(var(--glow-primary) / 0.1);
+    }
+    50% {
+      box-shadow: 0 0 30px hsl(var(--glow-primary) / 0.6),
+                  0 0 60px hsl(var(--glow-primary) / 0.4),
+                  0 0 90px hsl(var(--glow-primary) / 0.2);
+    }
+  }
+
+  /* Slide up animation for dashboard cards */
+  .slide-up {
+    animation: slide-up 0.4s ease-out forwards;
+  }
+
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* === New Splash Screen Styles === */
+
+/* This wrapper handles the final slide-up animation */
+.splash-page-wrapper {
+  min-height: 100vh;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: hsl(var(--background));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 100;
+  /* Animation sequence: wait 2.5s, then slide up for 0.5s */
+  animation: slide-up-exit 0.5s ease-in forwards;
+  animation-delay: 2.5s;
+}
+
+/* The NEURA text element */
+.splash-text-v2 {
+  font-size: 4rem;
+  font-weight: 800; /* Extra bold */
+  letter-spacing: 0.25em;
+  color: hsl(var(--muted-foreground));
+  position: relative;
+  /* Animation sequence: wait 1s, then change color over 1.5s */
+  animation: text-color-fade-in 1.5s ease-out 1s forwards;
+}
+
+/* The pseudo-element that creates the shiny reflection */
+.splash-text-v2::before {
+  content: 'NEURA';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, hsl(var(--foreground)), transparent);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* Animation sequence: wait 1s, then shine for 1.5s */
+  animation: shine-effect 1.5s ease-out 1s forwards;
+}
+
+
+/* === Keyframe Animations === */
+
+/* Fades the base text color from gray to white */
+@keyframes text-color-fade-in {
+  from {
+    color: hsl(var(--muted-foreground));
+  }
+  to {
+    color: hsl(var(--foreground));
+  }
+}
+
+/* Moves the gradient across the text to create the shine */
+@keyframes shine-effect {
+  0% {
+    background-position: 150% 0;
+  }
+  100% {
+    background-position: -50% 0;
+  }
+}
+
+/* Moves the entire splash screen up and out of view */
+@keyframes slide-up-exit {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100vh);
+  }
+}
+
